@@ -9,7 +9,6 @@ import (
 
 type botConfig struct {
 	Token   string
-	Prefix  string
 	OwnerID string
 }
 
@@ -51,7 +50,6 @@ func getValue(key string) string {
 
 func setConfig(config *MFConfig) {
 	config.Bot = botConfig{
-		Prefix:  getRequiredValue("BOT_PREFIX"),
 		Token:   getRequiredValue("BOT_TOKEN"),
 		OwnerID: getRequiredValue("BOT_OWNER_ID"),
 	}
