@@ -39,7 +39,7 @@ var PaginationContainerModal *commands.Modal = &commands.Modal{
 		if _, err := strconv.Atoi(cmp.Value); err != nil {
 			inter.Reply(&discordgo.InteractionResponseData{
 				Components: []discordgo.MessageComponent{
-					builders.MakeErrorContainer("해당 값은 숫자여야해요."),
+					builders.MakeErrorContainer("The value must be number."),
 				},
 				Flags: discordgo.MessageFlagsEphemeral | discordgo.MessageFlagsIsComponentsV2,
 			})

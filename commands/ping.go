@@ -9,14 +9,14 @@ import (
 
 var PingCommand = &Command{
 	ApplicationCommand: &discordgo.ApplicationCommand{
-		Name:        "핑",
-		Description: "봇의 레이턴시를 확인해요.",
+		Name:        "ping",
+		Description: "Check the bot's latency",
 	},
 	Run: func(inter *builders.InteractionCreate) error {
-		title := fmt.Sprintf("### 🏓 %s의 지연시간", inter.Session.State.User.Username)
+		title := "### 🏓 Pong!"
 
 		if err := builders.NewMessageSender(inter).
-			AddComponents(builders.ContainerBuilder().AddText(title).AddText("- 지연시간 측정 중...")).
+			AddComponents(builders.ContainerBuilder().AddText(title).AddText("- Calculating latency...")).
 			SetComponentsV2(true).
 			Send(); err != nil {
 			return err
@@ -34,7 +34,7 @@ var PingCommand = &Command{
 			AddComponents(
 				builders.ContainerBuilder().
 					AddText(title).
-					AddText(fmt.Sprintf("- **디스코드 지연시간:** `%d`ms", discordPing)),
+					AddText(fmt.Sprintf("- **Discord latency:** `%d`ms", discordPing)),
 			).
 			SetComponentsV2(true).
 			Send()

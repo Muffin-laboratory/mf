@@ -69,7 +69,7 @@ func makeComponents(id string, current, total int) *discordgo.ActionsRow {
 	return ActionsRowBuilder(
 		ButtonBuilder().
 			SetStyle(discordgo.PrimaryButton).
-			SetLabel("이전").
+			SetLabel("Previous").
 			SetCustomID(utils.MakePaginationEmbedPrev(id)).
 			SetDisabled(disabled),
 		ButtonBuilder().
@@ -79,7 +79,7 @@ func makeComponents(id string, current, total int) *discordgo.ActionsRow {
 			SetDisabled(disabled),
 		ButtonBuilder().
 			SetStyle(discordgo.PrimaryButton).
-			SetLabel("다음").
+			SetLabel("Next").
 			SetCustomID(utils.MakePaginationEmbedNext(id)).
 			SetDisabled(disabled),
 	).
@@ -134,15 +134,15 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 func (p *PaginationContainer) ShowModal(i *InteractionCreate) error {
 	return i.ShowModal(&ModalData{
 		CustomId: utils.MakePaginationEmbedModal(p.ID),
-		Title:    fmt.Sprintf("%s의 리스트", i.Session.State.User.Username),
+		Title:    "Set page",
 		Components: []discordgo.MessageComponent{
 			discordgo.ActionsRow{
 				Components: []discordgo.MessageComponent{
 					discordgo.TextInput{
 						CustomID:    utils.MakePaginationEmbedSetPage(p.ID),
-						Label:       "페이지",
+						Label:       "Page number",
 						Style:       discordgo.TextInputShort,
-						Placeholder: "이동할 페이지를 여기에 적어주세요.",
+						Placeholder: "Put the page number you want to move.",
 						Required:    true,
 					},
 				},
