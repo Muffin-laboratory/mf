@@ -1,8 +1,6 @@
 package builders
 
 import (
-	"fmt"
-
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -45,7 +43,7 @@ func (c *Container) Build() discordgo.MessageComponent {
 func MakeErrorContainer(text string) *Container {
 	return ContainerBuilder().
 		AddComponents(
-			TextDisplayBuilder("### ❌ 오류"),
+			TextDisplayBuilder("### ❌ Error"),
 			TextDisplayBuilder(text),
 		)
 }
@@ -53,7 +51,7 @@ func MakeErrorContainer(text string) *Container {
 func MakeDeclineContainer(text string) *Container {
 	return ContainerBuilder().
 		AddComponents(
-			TextDisplayBuilder("### ❌ 거부"),
+			TextDisplayBuilder("### ❌ Declined"),
 			TextDisplayBuilder(text),
 		)
 }
@@ -61,7 +59,7 @@ func MakeDeclineContainer(text string) *Container {
 func MakeCanceledContainer(text string) *Container {
 	return ContainerBuilder().
 		AddComponents(
-			TextDisplayBuilder("### ❌ 취소"),
+			TextDisplayBuilder("### ❌ Canceled"),
 			TextDisplayBuilder(text),
 		)
 }
@@ -69,15 +67,7 @@ func MakeCanceledContainer(text string) *Container {
 func MakeSuccessContainer(text string) *Container {
 	return ContainerBuilder().
 		AddComponents(
-			TextDisplayBuilder("### ✅ 성공"),
+			TextDisplayBuilder("### ✅ Success"),
 			TextDisplayBuilder(text),
 		)
-}
-
-func MakeUserIsNotRegisteredErrContainer() *Container {
-	return MakeErrorContainer("해당 기능은 등록된 사용자만 쓸 수 있어요. `/가입`으로 가입해주새요.")
-}
-
-func MakeUserIsBlockedContainer(globalName, reason string) *Container {
-	return MakeDeclineContainer(fmt.Sprintf("- %s님은 서비스에서 차단되었어요.\n> 사유: %s", globalName, reason))
 }
