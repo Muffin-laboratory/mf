@@ -90,7 +90,7 @@ func (d *Discommand) ChatInputRun(name string, s *discordgo.Session, inter *disc
 	if command, ok := d.Commands[name]; ok {
 		if command.Flags&CommandFlagsIsDeveloperOnlyCommand != 0 && i.User.ID != configs.GetConfig().Bot.OwnerID {
 			return builders.NewMessageSender(i).
-				AddComponents(builders.MakeDeclineContainer("이 명령어는 개발자 전용 명령어에요.")).
+				AddComponents(builders.MakeDeclineContainer("This command is developer only command.")).
 				SetComponentsV2(true).
 				SetEphemeral(true).
 				Send()
