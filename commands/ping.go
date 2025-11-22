@@ -1,8 +1,6 @@
 package commands
 
 import (
-	"fmt"
-
 	"github.com/Muffin-laboratory/mf/builders"
 	"github.com/bwmarrin/discordgo"
 )
@@ -34,7 +32,7 @@ var PingCommand = &Command{
 			AddComponents(
 				builders.ContainerBuilder().
 					AddText(title).
-					AddText(fmt.Sprintf("- **Discord latency:** `%d`ms", discordPing)),
+					AddText("- **Discord latency:** `%d`ms", discordPing),
 			).
 			SetComponentsV2(true).
 			Send()

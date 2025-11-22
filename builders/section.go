@@ -1,6 +1,8 @@
 package builders
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"github.com/bwmarrin/discordgo"
+)
 
 type Section struct {
 	*discordgo.Section
@@ -17,10 +19,8 @@ func (s *Section) SetAccessory(accessory ComponentBuilder) *Section {
 	return s
 }
 
-func (s *Section) AddText(text string) *Section {
-	s.Components = append(s.Components, discordgo.TextDisplay{
-		Content: text,
-	})
+func (s *Section) AddText(format string, a ...any) *Section {
+	s.Components = append(s.Components, TextDisplayBuilder(format, a...).Build())
 	return s
 }
 

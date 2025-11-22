@@ -31,8 +31,8 @@ func (c *Container) AddComponents(components ...ComponentBuilder) *Container {
 	return c
 }
 
-func (c *Container) AddText(text string) *Container {
-	c.AddComponents(TextDisplayBuilder(text))
+func (c *Container) AddText(format string, a ...any) *Container {
+	c.AddComponents(TextDisplayBuilder(format, a...))
 	return c
 }
 

@@ -1,21 +1,25 @@
 package builders
 
-import "github.com/bwmarrin/discordgo"
+import (
+	"fmt"
+
+	"github.com/bwmarrin/discordgo"
+)
 
 type TextDisplay struct {
 	*discordgo.TextDisplay
 }
 
-func TextDisplayBuilder(text string) *TextDisplay {
+func TextDisplayBuilder(format string, a ...any) *TextDisplay {
 	return &TextDisplay{
 		TextDisplay: &discordgo.TextDisplay{
-			Content: text,
+			Content: fmt.Sprintf(format, a...),
 		},
 	}
 }
 
-func (t *TextDisplay) SetText(text string) *TextDisplay {
-	t.TextDisplay.Content = text
+func (t *TextDisplay) SetText(format string, a ...any) *TextDisplay {
+	t.TextDisplay.Content = fmt.Sprintf(format, a...)
 	return t
 }
 
