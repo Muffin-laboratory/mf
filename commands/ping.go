@@ -2,11 +2,12 @@ package commands
 
 import (
 	"github.com/Muffin-laboratory/mf/builders"
+	"github.com/Muffin-laboratory/mf/loader"
 	"github.com/bwmarrin/discordgo"
 )
 
 func init() {
-	GetDiscommand().LoadCommand(&Command{
+	loader.GetMFL().LoadCommand(&loader.Command{
 		ApplicationCommand: &discordgo.ApplicationCommand{
 			Name:        "ping",
 			Description: "Check the bot's latency",

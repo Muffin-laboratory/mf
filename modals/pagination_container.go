@@ -5,13 +5,13 @@ import (
 	"strings"
 
 	"github.com/Muffin-laboratory/mf/builders"
-	"github.com/Muffin-laboratory/mf/commands"
+	"github.com/Muffin-laboratory/mf/loader"
 	"github.com/Muffin-laboratory/mf/utils"
 	"github.com/bwmarrin/discordgo"
 )
 
 func init() {
-	commands.GetDiscommand().LoadModal(&commands.Modal{
+	loader.GetMFL().LoadModal(&loader.Modal{
 		Parse: func(inter *builders.InteractionCreate) bool {
 			data := inter.ModalSubmitData()
 			customID := data.CustomID

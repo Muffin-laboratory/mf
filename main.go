@@ -6,8 +6,8 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/Muffin-laboratory/mf/commands"
 	"github.com/Muffin-laboratory/mf/configs"
+	"github.com/Muffin-laboratory/mf/loader"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -21,8 +21,8 @@ func main() {
 
 	var globalCmds []*discordgo.ApplicationCommand
 	var developerOnlyGuildCmds []*discordgo.ApplicationCommand
-	for _, cmd := range commands.GetDiscommand().Commands {
-		if cmd.Flags&commands.CommandFlagsIsDeveloperOnlyCommand != 0 {
+	for _, cmd := range loader.GetMFL().Commands {
+		if cmd.Flags&loader.CommandFlagsIsDeveloperOnlyCommand != 0 {
 			developerOnlyGuildCmds = append(developerOnlyGuildCmds, cmd.ApplicationCommand)
 			continue
 		}

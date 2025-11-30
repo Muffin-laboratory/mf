@@ -4,13 +4,13 @@ import (
 	"strings"
 
 	"github.com/Muffin-laboratory/mf/builders"
-	"github.com/Muffin-laboratory/mf/commands"
+	"github.com/Muffin-laboratory/mf/loader"
 	"github.com/Muffin-laboratory/mf/utils"
 	"github.com/bwmarrin/discordgo"
 )
 
 func init() {
-	commands.GetDiscommand().LoadComponent(&commands.Component{
+	loader.GetMFL().LoadComponent(&loader.Component{
 		Parse: func(inter *builders.InteractionCreate) bool {
 			if inter.MessageComponentData().ComponentType == discordgo.ButtonComponent {
 				customID := inter.MessageComponentData().CustomID

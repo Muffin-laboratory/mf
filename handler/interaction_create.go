@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/Muffin-laboratory/mf/builders"
-	"github.com/Muffin-laboratory/mf/commands"
+	"github.com/Muffin-laboratory/mf/loader"
 	"github.com/bwmarrin/discordgo"
 )
 
@@ -12,19 +12,19 @@ func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
 	go func() {
 		switch i.Type {
 		case discordgo.InteractionApplicationCommand:
-			if err := commands.GetDiscommand().ChatInputRun(i.ApplicationCommandData().Name, s, i); err != nil {
+			if err := loader.GetMFL().ChatInputRun(i.ApplicationCommandData().Name, s, i); err != nil {
 				returnErr(err, s, i)
 			}
 		case discordgo.InteractionMessageComponent:
-			if err := commands.GetDiscommand().ComponentRun(s, i); err != nil {
+			if err := loader.GetMFL().ComponentRun(s, i); err != nil {
 				returnErr(err, s, i)
 			}
 		case discordgo.InteractionModalSubmit:
-			if err := commands.GetDiscommand().ModalRun(s, i); err != nil {
+			if err := loader.GetMFL().ModalRun(s, i); err != nil {
 				returnErr(err, s, i)
 			}
 		case discordgo.InteractionApplicationCommandAutocomplete:
-			if err := commands.GetDiscommand().ChatInputAutocomplete(i.ApplicationCommandData().Name, s, i); err != nil {
+			if err := loader.GetMFL().ChatInputAutocomplete(i.ApplicationCommandData().Name, s, i); err != nil {
 				returnErr(err, s, i)
 			}
 		}
