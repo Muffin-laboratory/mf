@@ -19,6 +19,7 @@ type PaginationContainer struct {
 
 var paginationContainers = make(map[string]*PaginationContainer)
 
+// PaginationContainerBuilder creates a new PaginationContainer
 func PaginationContainerBuilder(m any) *PaginationContainer {
 	var userID string
 
@@ -37,6 +38,7 @@ func PaginationContainerBuilder(m any) *PaginationContainer {
 	}
 }
 
+// AddContainers adds containers
 func (p *PaginationContainer) AddContainers(containers ...*Container) *PaginationContainer {
 	p.Total += len(containers)
 	for _, container := range containers {
@@ -45,6 +47,7 @@ func (p *PaginationContainer) AddContainers(containers ...*Container) *Paginatio
 	return p
 }
 
+// Start starts the paginated-container
 func (p *PaginationContainer) Start() error {
 	container := *p.Containers[0]
 	container.Components = append(container.Components, makeComponents(p.ID, p.Current, p.Total))
@@ -86,6 +89,7 @@ func makeComponents(id string, current, total int) *discordgo.ActionsRow {
 		Build().(*discordgo.ActionsRow)
 }
 
+// GetPaginationContainer gets PaginationContainer
 func GetPaginationContainer(id string) *PaginationContainer {
 	if p, ok := paginationContainers[id]; ok {
 		return p
@@ -93,6 +97,7 @@ func GetPaginationContainer(id string) *PaginationContainer {
 	return nil
 }
 
+// Prev move to previous page
 func (p *PaginationContainer) Prev(i *InteractionCreate) error {
 	if p.Current == 1 {
 		p.Current = p.Total
@@ -103,6 +108,7 @@ func (p *PaginationContainer) Prev(i *InteractionCreate) error {
 	return p.Set(i, p.Current)
 }
 
+// Next moves to next page
 func (p *PaginationContainer) Next(i *InteractionCreate) error {
 	if p.Current >= p.Total {
 		p.Current = 1
@@ -113,6 +119,7 @@ func (p *PaginationContainer) Next(i *InteractionCreate) error {
 	return p.Set(i, p.Current)
 }
 
+// Set sets to page
 func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 	if page <= 0 {
 		p.Current = 1
@@ -131,6 +138,7 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 	})
 }
 
+// ShowModal show discord's modal
 func (p *PaginationContainer) ShowModal(i *InteractionCreate) error {
 	return i.ShowModal(&ModalData{
 		CustomId: utils.MakePaginationEmbedModal(p.ID),
