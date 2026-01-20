@@ -9,26 +9,24 @@ import (
 )
 
 func InteractionCreate(s *discordgo.Session, i *discordgo.InteractionCreate) {
-	go func() {
-		switch i.Type {
-		case discordgo.InteractionApplicationCommand:
-			if err := loader.GetMFL().ChatInputRun(i.ApplicationCommandData().Name, s, i); err != nil {
-				returnErr(err, s, i)
-			}
-		case discordgo.InteractionMessageComponent:
-			if err := loader.GetMFL().ComponentRun(s, i); err != nil {
-				returnErr(err, s, i)
-			}
-		case discordgo.InteractionModalSubmit:
-			if err := loader.GetMFL().ModalRun(s, i); err != nil {
-				returnErr(err, s, i)
-			}
-		case discordgo.InteractionApplicationCommandAutocomplete:
-			if err := loader.GetMFL().ChatInputAutocomplete(i.ApplicationCommandData().Name, s, i); err != nil {
-				returnErr(err, s, i)
-			}
+	switch i.Type {
+	case discordgo.InteractionApplicationCommand:
+		if err := loader.GetMFL().ChatInputRun(i.ApplicationCommandData().Name, s, i); err != nil {
+			returnErr(err, s, i)
 		}
-	}()
+	case discordgo.InteractionMessageComponent:
+		if err := loader.GetMFL().ComponentRun(s, i); err != nil {
+			returnErr(err, s, i)
+		}
+	case discordgo.InteractionModalSubmit:
+		if err := loader.GetMFL().ModalRun(s, i); err != nil {
+			returnErr(err, s, i)
+		}
+	case discordgo.InteractionApplicationCommandAutocomplete:
+		if err := loader.GetMFL().ChatInputAutocomplete(i.ApplicationCommandData().Name, s, i); err != nil {
+			returnErr(err, s, i)
+		}
+	}
 }
 
 func returnErr(err error, s *discordgo.Session, i *discordgo.InteractionCreate) {
