@@ -5,15 +5,13 @@
 # Features
 
 - builder-pattern
-- command and message component, modal components loader (commands/discommand.go)
+- command and message component, modal components loader (loader/)
 - paginated container (ComponentsV2, It looks like embed.)
 
 ## Examples
 
-- Command example: commands/ping.go (commands/discord.go is command loader)
-
+- Command example: commands/ping.go
 - Message Component example: components/pagination_container.go
-
 - Modal Component example: modals/pagination_container.go
 
 # Configure
