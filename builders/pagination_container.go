@@ -3,6 +3,7 @@ package builders
 import (
 	"fmt"
 	"math/rand"
+	"time"
 
 	"github.com/Muffin-laboratory/mf/utils"
 	"github.com/bwmarrin/discordgo"
@@ -15,9 +16,12 @@ type PaginationContainer struct {
 	Total      int
 	ID         string
 	m          any
+	timer      *time.Timer
 }
 
 var paginationContainers = make(map[string]*PaginationContainer)
+
+const endDuration = 10 * time.Minute
 
 // PaginationContainerBuilder creates a new PaginationContainer
 func PaginationContainerBuilder(m any) *PaginationContainer {
@@ -38,6 +42,15 @@ func PaginationContainerBuilder(m any) *PaginationContainer {
 	}
 }
 
+func (p *PaginationContainer) waitTimerEnd() {
+	<-p.timer.C
+	delete(paginationContainers, p.ID)
+}
+
+func (p *PaginationContainer) resetTimer() {
+	p.timer.Reset(endDuration)
+}
+
 // AddContainers adds containers
 func (p *PaginationContainer) AddContainers(containers ...*Container) *PaginationContainer {
 	p.Total += len(containers)
@@ -50,6 +63,8 @@ func (p *PaginationContainer) Start() error {
 	container := *p.Containers[0]
 	container.AddComponents(makeComponents(p.ID, p.Current, p.Total))
 	paginationContainers[p.ID] = p
+
+	go p.waitTimerEnd()
 
 	return NewMessageSender(p.m).
 		AddComponents(&container).
@@ -117,6 +132,8 @@ func (p *PaginationContainer) Next(i *InteractionCreate) error {
 
 // Set sets to page
 func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
+	p.resetTimer()
+
 	if page <= 0 {
 		p.Current = 1
 	} else if page > p.Total {
