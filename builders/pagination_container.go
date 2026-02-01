@@ -137,7 +137,7 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 // ShowModal show discord's modal
 func (p *PaginationContainer) ShowModal(i *InteractionCreate) error {
 	return i.ShowModal(&ModalData{
-		CustomId: utils.MakePaginationEmbedModal(p.ID),
+		CustomID: utils.MakePaginationEmbedModal(p.ID),
 		Title:    "Set page",
 		Components: []discordgo.MessageComponent{
 			discordgo.ActionsRow{

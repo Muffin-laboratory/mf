@@ -7,7 +7,7 @@ import (
 type CommandInteractionOptionsMap map[string]*discordgo.ApplicationCommandInteractionDataOption
 
 type ModalData struct {
-	CustomId   string                       `json:"custom_id"`
+	CustomID   string                       `json:"custom_id"`
 	Title      string                       `json:"title"`
 	Components []discordgo.MessageComponent `json:"components"`
 }
