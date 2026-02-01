@@ -39,6 +39,7 @@ func PaginationContainerBuilder(m any) *PaginationContainer {
 		Current: 1,
 		ID:      id,
 		m:       m,
+		timer:   time.NewTimer(endDuration),
 	}
 }
 
