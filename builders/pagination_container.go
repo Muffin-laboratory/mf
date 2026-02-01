@@ -10,7 +10,7 @@ import (
 
 // PaginationContainer is container with page
 type PaginationContainer struct {
-	Containers []*discordgo.Container
+	Containers []*Container
 	Current    int
 	Total      int
 	ID         string
@@ -41,28 +41,25 @@ func PaginationContainerBuilder(m any) *PaginationContainer {
 // AddContainers adds containers
 func (p *PaginationContainer) AddContainers(containers ...*Container) *PaginationContainer {
 	p.Total += len(containers)
-	for _, container := range containers {
-		p.Containers = append(p.Containers, container.Build().(*discordgo.Container))
-	}
+	p.Containers = append(p.Containers, containers...)
 	return p
 }
 
 // Start starts the paginated-container
 func (p *PaginationContainer) Start() error {
 	container := *p.Containers[0]
-	container.Components = append(container.Components, makeComponents(p.ID, p.Current, p.Total))
-
+	container.AddComponents(makeComponents(p.ID, p.Current, p.Total))
 	paginationContainers[p.ID] = p
 
 	return NewMessageSender(p.m).
-		AddComponents(container).
+		AddComponents(&container).
 		SetReply(true).
 		SetEphemeral(true).
 		SetComponentsV2(true).
 		Send()
 }
 
-func makeComponents(id string, current, total int) *discordgo.ActionsRow {
+func makeComponents(id string, current, total int) *ActionsRow {
 	disabled := false
 
 	if total == 1 {
@@ -85,8 +82,7 @@ func makeComponents(id string, current, total int) *discordgo.ActionsRow {
 			SetLabel("Next").
 			SetCustomID(utils.MakePaginationEmbedNext(id)).
 			SetDisabled(disabled),
-	).
-		Build().(*discordgo.ActionsRow)
+	)
 }
 
 // GetPaginationContainer gets PaginationContainer
@@ -130,11 +126,11 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 	}
 
 	container := *p.Containers[p.Current-1]
-	container.Components = append(container.Components, makeComponents(p.ID, p.Current, p.Total))
+	container.AddComponents(makeComponents(p.ID, p.Current, p.Total))
 
 	return i.Update(&discordgo.InteractionResponseData{
 		Flags:      discordgo.MessageFlagsIsComponentsV2,
-		Components: []discordgo.MessageComponent{container},
+		Components: []discordgo.MessageComponent{container.Build()},
 	})
 }
 

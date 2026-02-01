@@ -29,8 +29,11 @@ func (s *MessageSender) AddEmbeds(embeds ...*discordgo.MessageEmbed) *MessageSen
 	return s
 }
 
-func (s *MessageSender) AddComponents(components ...discordgo.MessageComponent) *MessageSender {
-	s.Components = append(s.Components, components...)
+func (s *MessageSender) AddComponents(components ...ComponentBuilder) *MessageSender {
+	for _, cmp := range components {
+		s.Components = append(s.Components, cmp.Build())
+	}
+
 	return s
 }
 

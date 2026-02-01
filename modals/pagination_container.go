@@ -40,7 +40,7 @@ func init() {
 			if _, err := strconv.Atoi(cmp.Value); err != nil {
 				inter.Reply(&discordgo.InteractionResponseData{
 					Components: []discordgo.MessageComponent{
-						builders.MakeErrorContainer("The value must be number."),
+						builders.MakeErrorContainer("The value must be number.").Build(),
 					},
 					Flags: discordgo.MessageFlagsEphemeral | discordgo.MessageFlagsIsComponentsV2,
 				})
