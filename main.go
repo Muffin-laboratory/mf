@@ -42,7 +42,6 @@ func main() {
 		}
 	}
 
-	fmt.Println("[MF] The bot is running. version:", configs.MFVersion)
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 	<-sc

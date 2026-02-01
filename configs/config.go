@@ -3,6 +3,7 @@ package configs
 import (
 	"fmt"
 	"os"
+	"sync"
 
 	"github.com/joho/godotenv"
 )
@@ -23,14 +24,15 @@ type MFConfig struct {
 }
 
 var instance *MFConfig
+var once sync.Once
 
 // GetConfig gets MFConfig instance
 func GetConfig() *MFConfig {
-	if instance == nil {
+	once.Do(func() {
 		godotenv.Load()
 		instance = &MFConfig{}
 		setConfig(instance)
-	}
+	})
 
 	return instance
 }

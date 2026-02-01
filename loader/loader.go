@@ -4,7 +4,6 @@ import (
 	"sync"
 
 	"github.com/Muffin-laboratory/mf/builders"
-	"github.com/bwmarrin/discordgo"
 )
 
 type run func(inter *builders.InteractionCreate) error
@@ -23,34 +22,14 @@ var (
 )
 
 var instance *MFL
+var once sync.Once
 
 func GetMFL() *MFL {
-	if instance == nil {
+	once.Do(func() {
 		instance = &MFL{
-			Commands:   map[string]*Command{},
-			Components: []*Component{},
-			Modals:     []*Modal{},
+			Commands: make(map[string]*Command),
 		}
-	}
+	})
 
 	return instance
-}
-
-func (m *MFL) ModalRun(s *discordgo.Session, inter *discordgo.InteractionCreate) error {
-	var err error
-
-	i := &builders.InteractionCreate{
-		InteractionCreate: inter,
-		Session:           s,
-	}
-
-	for _, m := range m.Modals {
-		if !m.Parse(i) {
-			continue
-		}
-
-		err = m.Run(i)
-		break
-	}
-	return err
 }
