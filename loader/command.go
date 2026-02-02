@@ -29,7 +29,6 @@ func (m *MFL) ChatInputRun(name string, s *discordgo.Session, inter *discordgo.I
 	i := &builders.InteractionCreate{
 		InteractionCreate: inter,
 		Session:           s,
-		Options:           builders.MakeCommandInteractionOptionsMap(inter.ApplicationCommandData().Options),
 	}
 
 	i.InteractionCreate.User = builders.GetInteractionUser(inter)

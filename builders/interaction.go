@@ -4,8 +4,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type CommandInteractionOptionsMap map[string]*discordgo.ApplicationCommandInteractionDataOption
-
 type ModalData struct {
 	CustomID   string                       `json:"custom_id"`
 	Title      string                       `json:"title"`
@@ -15,9 +13,7 @@ type ModalData struct {
 // InteractionCreate custom data of discordgo.InteractionCreate
 type InteractionCreate struct {
 	*discordgo.InteractionCreate
-	Session *discordgo.Session
-	// NOTE: It's only can ApplicationCommand
-	Options  CommandInteractionOptionsMap
+	Session  *discordgo.Session
 	Deferred bool
 	Replied  bool
 }
@@ -33,18 +29,6 @@ func (i *InteractionCreate) Reply(data *discordgo.InteractionResponseData) error
 
 	i.Replied = true
 	return nil
-}
-
-// MakeCommandInteractionOptionsMap to this interaction.
-// NOTE: It's only can ApplicationCommand
-func MakeCommandInteractionOptionsMap(opts []*discordgo.ApplicationCommandInteractionDataOption) CommandInteractionOptionsMap {
-	optsMap := CommandInteractionOptionsMap{}
-
-	for _, opt := range opts {
-		optsMap[opt.Name] = opt
-	}
-
-	return optsMap
 }
 
 // NOTE: It's only can ApplicationCommand
