@@ -92,11 +92,11 @@ func (s *MessageSender) Send() error {
 		}
 
 		if m.Replied || m.Deferred {
-			return m.EditReply(&InteractionEdit{
+			return m.EditReply(&discordgo.WebhookEdit{
 				Content:    &s.Content,
 				Embeds:     &s.Embeds,
 				Components: &s.Components,
-				Flags:      &flags,
+				Flags:      flags,
 			})
 		}
 
