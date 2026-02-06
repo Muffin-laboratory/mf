@@ -154,21 +154,22 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 
 // ShowModal show discord's modal
 func (p *PaginationContainer) ShowModal(i *InteractionCreate) error {
-	return i.ShowModal(&ModalData{
-		CustomID: utils.MakePaginationEmbedModal(p.ID),
-		Title:    "Set page",
-		Components: []discordgo.MessageComponent{
-			discordgo.ActionsRow{
-				Components: []discordgo.MessageComponent{
-					discordgo.TextInput{
-						CustomID:    utils.MakePaginationEmbedSetPage(p.ID),
-						Label:       "Page number",
-						Style:       discordgo.TextInputShort,
-						Placeholder: "Put the page number you want to move.",
-						Required:    true,
-					},
-				},
-			},
-		},
-	})
+	return i.ShowModal(
+		ModalBuilder().
+			SetCustomID(utils.MakePaginationEmbedModal(p.ID)).
+			SetTitle("Set Page").
+			AddComponents(
+				LabelBuilder().
+					SetLabel("Page number").
+					SetDescription("Put the page number you want to move.").
+					SetComponent(
+						TextInputBuilder().
+							SetCustomID(utils.MakePaginationEmbedSetPage(p.ID)).
+							SetStyle(discordgo.TextInputShort).
+							SetPlaceholder("Set page number...").
+							SetValue(fmt.Sprint(p.Current)).
+							SetRequired(true),
+					),
+			),
+	)
 }

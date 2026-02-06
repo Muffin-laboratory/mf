@@ -4,12 +4,6 @@ import (
 	"github.com/bwmarrin/discordgo"
 )
 
-type ModalData struct {
-	CustomID   string                       `json:"custom_id"`
-	Title      string                       `json:"title"`
-	Components []discordgo.MessageComponent `json:"components"`
-}
-
 // InteractionCreate custom data of discordgo.InteractionCreate
 type InteractionCreate struct {
 	*discordgo.InteractionCreate
@@ -102,10 +96,10 @@ func (i *InteractionCreate) Update(data *discordgo.InteractionResponseData) erro
 }
 
 // ShowModal shows modal to this interaction.
-func (i *InteractionCreate) ShowModal(data *ModalData) error {
+func (i *InteractionCreate) ShowModal(data *Modal) error {
 	var reqData struct {
 		Type discordgo.InteractionResponseType `json:"type"`
-		Data ModalData                         `json:"data"`
+		Data Modal                             `json:"data"`
 	}
 
 	reqData.Type = discordgo.InteractionResponseModal
