@@ -42,7 +42,12 @@ func (c *Container) AddText(format string, a ...any) *Container {
 	return c
 }
 
-// Builds returns discordgo.Container(discordgo.MessageComponent)
+// GetComponentsLength returns its components length
+func (c *Container) GetComponentsLength() int {
+	return len(c.container.Components)
+}
+
+// Build returns discordgo.Container(discordgo.MessageComponent)
 func (c *Container) Build() discordgo.MessageComponent {
 	return c.container
 }

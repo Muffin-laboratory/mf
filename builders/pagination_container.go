@@ -11,7 +11,7 @@ import (
 
 // PaginationContainer is container with page
 type PaginationContainer struct {
-	Containers []*Container
+	Containers []Container
 	Current    int
 	Total      int
 	ID         string
@@ -55,13 +55,15 @@ func (p *PaginationContainer) resetTimer() {
 // AddContainers adds containers
 func (p *PaginationContainer) AddContainers(containers ...*Container) *PaginationContainer {
 	p.Total += len(containers)
-	p.Containers = append(p.Containers, containers...)
+	for _, container := range containers {
+		p.Containers = append(p.Containers, *container)
+	}
 	return p
 }
 
 // Start starts the paginated-container
 func (p *PaginationContainer) Start() error {
-	container := *p.Containers[0]
+	container := p.Containers[0]
 	container.AddComponents(makeComponents(p.ID, p.Current, p.Total))
 	paginationContainers[p.ID] = p
 
@@ -109,6 +111,11 @@ func GetPaginationContainer(id string) *PaginationContainer {
 	return nil
 }
 
+// First moves to first page
+func (p *PaginationContainer) First(i *InteractionCreate) error {
+	return p.Set(i, 1)
+}
+
 // Prev move to previous page
 func (p *PaginationContainer) Prev(i *InteractionCreate) error {
 	if p.Current == 1 {
@@ -131,6 +138,11 @@ func (p *PaginationContainer) Next(i *InteractionCreate) error {
 	return p.Set(i, p.Current)
 }
 
+// Last moves to last page
+func (p *PaginationContainer) Last(i *InteractionCreate) error {
+	return p.Set(i, p.Total)
+}
+
 // Set sets to page
 func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 	p.resetTimer()
@@ -143,7 +155,8 @@ func (p *PaginationContainer) Set(i *InteractionCreate, page int) error {
 		p.Current = page
 	}
 
-	container := *p.Containers[p.Current-1]
+	container := p.Containers[p.Current-1]
+	container.container.Components = container.container.Components[:container.GetComponentsLength()-1]
 	container.AddComponents(makeComponents(p.ID, p.Current, p.Total))
 
 	return i.Update(&discordgo.InteractionResponseData{
