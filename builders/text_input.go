@@ -40,7 +40,7 @@ func (t *TextInput) SetMaxLength(maxLength int) *TextInput {
 
 // SetRequired sets the field is required.
 func (t *TextInput) SetRequired(required bool) *TextInput {
-	t.textInput.Required = required
+	t.textInput.Required = &required
 	return t
 }
 
