@@ -45,6 +45,11 @@ func (m *SelectMenu) SetDisabled(disabled bool) *SelectMenu {
 	return m
 }
 
+func (m *SelectMenu) SetRequired(required bool) *SelectMenu {
+	m.selectMenu.Required = &required
+	return m
+}
+
 // Build returns to discordgo.SelectMenu(discordgo.MessageComponent)
 func (m *SelectMenu) Build() discordgo.MessageComponent {
 	return m.selectMenu
